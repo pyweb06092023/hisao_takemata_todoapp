@@ -55,8 +55,8 @@
 - `デザイン`
 - `マーケティング`
 - `プログラミング`
-- `営業`
-- `家事育児`
+- `資格`
+- `就職活動`
 
 ### 5.3 `priority` の表現
 
@@ -94,7 +94,7 @@ CREATE TABLE todos (
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     CONSTRAINT chk_todos_category
-        CHECK (category IN ('デザイン', 'マーケティング', 'プログラミング', '営業', '家事育児')),
+        CHECK (category IN ('デザイン', 'マーケティング', 'プログラミング', '資格', '就職活動')),
     CONSTRAINT chk_todos_priority
         CHECK (priority IN (1, 2, 3)),
     CONSTRAINT chk_todos_title_length
