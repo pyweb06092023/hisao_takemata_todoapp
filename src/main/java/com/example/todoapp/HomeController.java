@@ -68,6 +68,25 @@ public class HomeController {
         return "edit";
     }
 
+    @GetMapping("/todos/{id}/delete")
+    public String deleteForm(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+        Todo todo = todoMapper.findById(id);
+        if (todo == null) {
+            redirectAttributes.addFlashAttribute("message", "見つかりませんでした");
+            return "redirect:/todos";
+        }
+        model.addAttribute("todo", todo);
+        model.addAttribute("id", id);
+        return "delete";
+    }
+
+    @PostMapping("/todos/{id}/delete")
+    public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        todoMapper.deleteById(id);
+        redirectAttributes.addFlashAttribute("message", "削除しました");
+        return "redirect:/todos";
+    }
+
     @PostMapping("/todos/{id}/confirm")
     public String editConfirm(@PathVariable Long id, @ModelAttribute Todo todo, Model model) {
         model.addAttribute("todo", todo);
@@ -86,7 +105,7 @@ public class HomeController {
     public String update(@PathVariable Long id, @ModelAttribute Todo todo, RedirectAttributes redirectAttributes) {
         todo.setId(id);
         todoMapper.update(todo);
-        redirectAttributes.addFlashAttribute("message", "保存しました");
+        redirectAttributes.addFlashAttribute("message", "更新しました");
         return "redirect:/todos";
     }
 }

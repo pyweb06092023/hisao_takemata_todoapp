@@ -33,6 +33,11 @@
         WHERE id = #{id}
     </select>
 
+    <delete id="deleteById" parameterType="long">
+        DELETE FROM todos
+        WHERE id = #{id}
+    </delete>
+
     <insert id="insert" parameterType="com.example.todoapp.Todo">
         INSERT INTO todos (
             title,
