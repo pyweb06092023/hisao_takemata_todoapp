@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
@@ -28,9 +29,17 @@ public class HomeController {
     }
 
     @GetMapping("/todos")
-    public String todos(Model model) {
-        List<Todo> todos = todoMapper.findAll();
+    public String todos(
+            @RequestParam(defaultValue = "") String keyword,
+            @RequestParam(defaultValue = "すべて") String category,
+            @RequestParam(defaultValue = "asc") String order,
+            Model model) {
+        String sortOrder = "desc".equals(order) ? "desc" : "asc";
+        List<Todo> todos = todoMapper.search(keyword, category, sortOrder);
         model.addAttribute("todos", todos);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("category", category);
+        model.addAttribute("order", sortOrder);
         return "todos";
     }
 
