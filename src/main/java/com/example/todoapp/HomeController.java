@@ -24,14 +24,14 @@ public class HomeController {
 
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("title", "繧・ｋ縺薙→邂｡逅・);
+        model.addAttribute("title", "\u3084\u308b\u3053\u3068\u7ba1\u7406");
         return "index";
     }
 
     @GetMapping("/todos")
     public String todos(
             @RequestParam(defaultValue = "") String keyword,
-            @RequestParam(defaultValue = "すべて") String category,
+            @RequestParam(defaultValue = "\u3059\u3079\u3066") String category,
             @RequestParam(defaultValue = "asc") String order,
             Model model) {
         String sortOrder = "desc".equals(order) ? "desc" : "asc";
@@ -67,7 +67,7 @@ public class HomeController {
     @PostMapping("/todos")
     public String create(@ModelAttribute Todo todo, RedirectAttributes redirectAttributes) {
         todoService.create(todo);
-        redirectAttributes.addFlashAttribute("message", "逋ｻ骭ｲ縺励∪縺励◆");
+        redirectAttributes.addFlashAttribute("message", "\u767b\u9332\u3057\u307e\u3057\u305f");
         return "redirect:/todos";
     }
 
@@ -75,7 +75,7 @@ public class HomeController {
     public String editForm(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         Todo todo = todoService.findById(id);
         if (todo == null) {
-            redirectAttributes.addFlashAttribute("message", "隕九▽縺九ｊ縺ｾ縺帙ｓ縺ｧ縺励◆");
+            redirectAttributes.addFlashAttribute("message", "\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f");
             return "redirect:/todos";
         }
         model.addAttribute("todo", todo);
@@ -87,7 +87,7 @@ public class HomeController {
     public String deleteForm(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         Todo todo = todoService.findById(id);
         if (todo == null) {
-            redirectAttributes.addFlashAttribute("message", "隕九▽縺九ｊ縺ｾ縺帙ｓ縺ｧ縺励◆");
+            redirectAttributes.addFlashAttribute("message", "\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f");
             return "redirect:/todos";
         }
         model.addAttribute("todo", todo);
@@ -98,7 +98,7 @@ public class HomeController {
     @PostMapping("/todos/{id}/delete")
     public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         todoService.delete(id);
-        redirectAttributes.addFlashAttribute("message", "蜑企勁縺励∪縺励◆");
+        redirectAttributes.addFlashAttribute("message", "\u524a\u9664\u3057\u307e\u3057\u305f");
         return "redirect:/todos";
     }
 
@@ -124,7 +124,7 @@ public class HomeController {
     public String update(@PathVariable Long id, @ModelAttribute Todo todo, RedirectAttributes redirectAttributes) {
         todo.setId(id);
         todoService.update(todo);
-        redirectAttributes.addFlashAttribute("message", "譖ｴ譁ｰ縺励∪縺励◆");
+        redirectAttributes.addFlashAttribute("message", "\u4fdd\u5b58\u3057\u307e\u3057\u305f");
         return "redirect:/todos";
     }
 }

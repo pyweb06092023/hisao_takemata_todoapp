@@ -3,7 +3,7 @@ services:
     image: mysql:8.0
     container_name: fw-mysql
     environment:
-      MYSQL_DATABASE: toecap
+      MYSQL_DATABASE: todoapp
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
       - "3306:3306"
