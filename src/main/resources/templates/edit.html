@@ -13,10 +13,12 @@
             <div class="form-row">
                 <label class="form-label" for="title">やること</label>
                 <input class="form-input" type="text" id="title" th:field="*{title}">
+                <p class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">やることを入力してください</p>
             </div>
             <div class="form-row">
                 <label class="form-label" for="detail">メモ</label>
                 <input class="form-input" type="text" id="detail" th:field="*{detail}">
+                <p class="error" th:if="${#fields.hasErrors('detail')}" th:errors="*{detail}">メモは255文字以内で入力してください</p>
             </div>
             <div class="form-row">
                 <label class="form-label" for="category">ジャンル</label>
@@ -25,9 +27,10 @@
                     <option value="デザイン">デザイン</option>
                     <option value="マーケティング">マーケティング</option>
                     <option value="プログラミング">プログラミング</option>
-                    <option value="資格">資格</option>
-                    <option value="就職活動">就職活動</option>
+                    <option value="勉強">勉強</option>
+                    <option value="家事育児">家事育児</option>
                 </select>
+                <p class="error" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">ジャンルを選んでください</p>
             </div>
             <div class="form-row">
                 <label class="form-label" for="priority">優先度</label>
@@ -37,13 +40,14 @@
                     <option value="2">中</option>
                     <option value="3">低</option>
                 </select>
+                <p class="error" th:if="${#fields.hasErrors('priority')}" th:errors="*{priority}">優先度を選んでください</p>
             </div>
             <div class="form-row">
                 <label class="form-label" for="dueDate">期限</label>
                 <input class="form-input" type="date" id="dueDate" th:field="*{dueDate}">
             </div>
             <div class="form-row">
-                <label class="form-label" for="completed">完了</label>
+                <label class="form-label" for="completed">状態</label>
                 <input type="checkbox" id="completed" th:field="*{completed}">
             </div>
             <div class="confirm-actions">
