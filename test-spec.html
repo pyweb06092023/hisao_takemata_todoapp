@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TODOアプリ テスト仕様書</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Yu Gothic UI", "Meiryo", sans-serif;
+      font-size: 12px;
+      line-height: 1.35;
+      color: #222;
+      background: #fff;
+    }
+
+    .page {
+      width: 100%;
+      padding: 16px;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 22px;
+    }
+
+    .notes {
+      margin: 0;
+      color: #444;
+    }
+
+    .print-button {
+      flex: 0 0 auto;
+      border: 1px solid #333;
+      background: #333;
+      color: #fff;
+      border-radius: 6px;
+      padding: 8px 14px;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    th,
+    td {
+      border: 1px solid #999;
+      padding: 6px;
+      vertical-align: top;
+      word-break: break-word;
+    }
+
+    th {
+      background: #f3f3f3;
+      text-align: left;
+    }
+
+    th:nth-child(1),
+    td:nth-child(1) {
+      width: 5%;
+    }
+
+    th:nth-child(2),
+    td:nth-child(2) {
+      width: 20%;
+    }
+
+    th:nth-child(3),
+    td:nth-child(3) {
+      width: 15%;
+    }
+
+    th:nth-child(4),
+    td:nth-child(4) {
+      width: 25%;
+    }
+
+    th:nth-child(5),
+    td:nth-child(5) {
+      width: 10%;
+    }
+
+    th:nth-child(6),
+    td:nth-child(6) {
+      width: 25%;
+    }
+
+    .result-cell label {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-right: 10px;
+      white-space: nowrap;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 54px;
+      resize: vertical;
+      border: 1px solid #999;
+      padding: 6px;
+      font: inherit;
+      line-height: 1.35;
+      overflow: hidden;
+    }
+
+    .mono {
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 11px;
+    }
+
+    @media print {
+      @page {
+        size: A4 landscape;
+        margin: 10mm;
+      }
+
+      body {
+        font-size: 10px;
+      }
+
+      .page {
+        padding: 0;
+      }
+
+      .print-button {
+        display: none;
+      }
+
+      textarea {
+        resize: none;
+        border: 1px solid #999;
+        page-break-inside: avoid;
+      }
+
+      tr,
+      td,
+      th {
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="page-header">
+      <div>
+        <h1>TODOアプリ テスト仕様書</h1>
+        <p class="notes">対象: <span class="mono">http://localhost:8080</span> / 開始時点で todos は5行</p>
+        <p class="notes">実施順: 上から順に実施</p>
+      </div>
+      <button type="button" class="print-button" id="printButton">PDFで保存</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>番号</th>
+          <th>確かめること</th>
+          <th>入れる値</th>
+          <th>期待する結果</th>
+          <th>結果</th>
+          <th>備考/NG</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>一覧画面を開くと、登録済みのやることが一覧で見える</td>
+          <td><span class="mono">/todos</span> を開く</td>
+          <td>一覧画面に5行のtodoが出て、列は「やること」「ジャンル」「優先度」「期限」「状態」「操作（編集・削除）」の順で見える。</td>
+          <td class="result-cell"><label><input type="radio" name="result-1">OK</label><label><input type="radio" name="result-1">NG</label></td>
+          <td><textarea></textarea></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>一覧画面の上部に絞り込み・並び替え・新規登録の操作がそろっている</td>
+          <td>一覧画面の上部を見る</td>
+          <td>一覧画面の上部に、名前の入力欄、ジャンルの選ぶ欄、「絞り込む」ボタン、「期限が近い順」「期限が遠い順」のリンク、「新規登録」ボタンが出る。</td>
+          <td class="result-cell"><label><input type="radio" name="result-2">OK</label><label><input type="radio" name="result-2">NG</label></td>
+          <td><textarea></textarea></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>一覧画面の優先度と状態が画面用の言葉で見える</td>
+          <td>一覧の各行を見る</td>
+          <td>優先度は「高・中・低」、状態は「完了・未完了」の言葉で出る。</td>
+          <td class="result-cell"><label><input type="radio" name="result-3">OK</label><label><input type="radio" name="result-3">NG</label></td>
+          <td><textarea></textarea></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>初回表示の一覧は期限が近い順で並ぶ</td>
+          <td><span class="mono">/todos</span> を開く</td>
+          <td>期限が入っている行は、期限が近いものから順に上へ並んで出る。</td>
+          <td class="result-cell"><label><input type="radio" name="result-4">OK</label><label><input type="radio" name="result-4">NG</label></td>
+          <td><textarea></textarea></td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>新規登録ボタンから登録画面へ進める</td>
+          <td>一覧で「新規登録」を押す</td>
+          <td><span class="mono">/todos/new</span> が開く。</td>
+          <td class="result-cell"><label><input type="radio" name="result-5">OK</label><label><input type="radio" name="result-5">NG</label></td>
+          <td><textarea></textarea></td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>登録画面に5つの入力欄と2つのボタンがある</td>
+          <td>登録画面を見る</td>
+          <td>登録画面に「やること」「メモ」「ジャンル」「優先度」「期限」の5項目と、「確認する」「一覧へ」の2つの操作が出る。</td>
+          <td class="result-cell"><label><input type="radio" name="result-6">OK</label><label><input type="radio" name="result-6">NG</label></td>
+          <td><textarea></textarea></td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>やることが空のままだと登録に進めない</td>
+          <td>やること: 空欄 / メモ: 空欄 / ジャンル: デザイン / 優先度: 高 / 期限: 空欄</td>
+          <td>登録画面のまま止まり、やること欄の下に「やることを入力してください」と出る。</td>
+          <td class="result-cell"><label><input type="radio" name="result-7">OK</label><label><input type="radio" name="result-7">NG</label></td>
+          <td><textarea></textarea></td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td>やることに空白だけを入れても登録に進めない</td>
+          <td>やること: 半角空白または全角空白だけ / メモ: 空欄 / ジャンル: デザイン / 優先度: 高 / 期限: 空欄</td>
+          <td>登録画面のまま止まり、やること欄の下に「やることを入力してください」と出る。</td>
+          <td class="result-cell"><label><input type="radio" name="result-8">OK</label><label><input type="radio" name="result-8">NG</label></td>
+          <td><textarea></textarea></td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td>やることが256文字以上だと登録に進めない</td>
+          <td>やること: 256文字の文字列 / メモ: 空欄 / ジャンル: デザイン / 優先度: 高 / 期限: 空欄</td>
+          <td>登録画面のまま止まり、やること欄の下に「やることは255文字以内で入力してください」と出る。</td>
+          <td class="result-cell"><label><input type="radio" name="result-9">OK</label><label><input type="radio" name="result-9">NG</label></td>
+          <td><textarea></textarea></td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td>メモが256文字以上だと登録に進めない</td>
+          <td>やること: テスト追加タスク / メモ: 256文字の文字列 / ジャンル: デザイン / 優先度: 高 / 期限: 空欄</td>
+          <td>登録画面のまま止まり、メモ欄の下に「メモは255文字以内で入力してください」と出る。</td>
+          <td class="result-cell"><label><input type="radio" name="result-10">OK</label><label><input type="radio" name="result-10">NG</label></td>
+          <td><textarea></textarea></td>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td>ジャンルを選ばないと登録に進めない</td>
+          <td>やること: テスト追加タスク / メモ: 空欄 / ジャンル: 未選択 / 優先度: 高 / 期限: 空欄</td>
+          <td>登録画面のまま止まり、ジャンル欄の下に「ジャンルを選んでください」と出る。</td>
+          <td class="result-cell"><label><input type="radio" name="result-11">OK</label><label><input type="radio" name="result-11">NG</label></td>
+          <td><textarea></textarea></td>
+        </tr>
+        <tr>
+          <td>12</td>
+          <td>優先度を選ばないと登録に進めない</td>
+          <td>やること: テスト追加タスク / メモ: 空欄 / ジャンル: デザイン / 優先度: 未選択 / 期限: 空欄</td>
+          <td>登録画面のまま止まり、優先度欄の下に「優先度を選んでください」と出る。</td>
+          <td class="result-cell"><label><input type="radio" name="result-12">OK</label><label><input type="radio" name="result-12">NG</label></td>
+          <td><textarea></textarea></td>
+        </tr>
+        <tr>
+          <td>13</td>
+          <td>正しい内容で確認画面へ進むと、入力値が文字で並び未入力欄は入力なしになる</td>
+          <td>やること: テスト追加タスク / メモ: 空欄 / ジャンル: プログラミング / 優先度: 中 / 期限: 空欄 で「確認する」を押す</td>
+          <td><span class="mono">/todos/confirm</span> が開き、5項目が入力欄ではなく文字で出て、メモと期限は「（入力なし）」と出る。</td>
+          <td class="result-cell"><label><input type="radio" name="result-13">OK</label><label><input type="radio" name="result-13">NG</label></td>
+          <td><textarea></textarea></td>
+        </tr>
+        <tr>
+          <td>14</td>
+          <td>登録確認の書き直すで、入れた値を保ったまま登録画面へ戻る</td>
+          <td>項番13の確認画面で「書き直す」を押す</td>
+          <td><span class="mono">/todos/new</span> に戻り、やること「テスト追加タスク」、ジャンル「プログラミング」、優先度「中」が入ったまま見える。</td>
+          <td class="result-cell"><label><input type="radio" name="result-14">OK</label><label><input type="radio" name="result-14">NG</label></td>
+          <td><textarea></textarea></td>
+        </tr>
+        <tr>
+          <td>15</td>
+          <td>登録すると一覧へ戻り、登録完了の文と追加した行が出る</td>
+          <td>やること: テスト追加タスク / メモ: 空欄 / ジャンル: プログラミング / 優先度: 中 / 期限: 2026-09-01 で確認後に「登録する」を押す</td>
+          <td>一覧画面の上に「登録しました」と出て、一覧に「テスト追加タスク」の行が増えて全部で6行になる。</td>
+          <td class="result-cell"><label><input type="radio" name="result-15">OK</label><label><input type="radio" name="result-15">NG</label></td>
+          <td><textarea></textarea></td>
+        </tr>
+        <tr>
+          <td>16</td>
+          <td>名前で絞り込むと、やることに言葉の一部を含む行だけが残る</td>
+          <td>キーワード: 追加 / ジャンル: すべて / 「絞り込む」を押す</td>
+          <td>「テスト追加タスク」を含む行だけが残って出る。</td>
+          <td class="result-cell"><label><input type="radio" name="result-16">OK</label><label><input type="radio" name="result-16">NG</label></td>
+          <td><textarea></textarea></td>
+        </tr>
+        <tr>
+          <td>17</td>
+          <td>名前で絞り込んだ結果のアドレスに条件が付く</td>
+          <td>項番16の結果画面のアドレスを見る</td>
+          <td>アドレスの後ろに、入力した絞り込み条件を表す文字列が付いている。</td>
+          <td class="result-cell"><label><input type="radio" name="result-17">OK</label><label><input type="radio" name="result-17">NG</label></td>
+          <td><textarea></textarea></td>
+        </tr>
+        <tr>
+          <td>18</td>
+          <td>ジャンルで絞り込むと、同じジャンルの行だけが残る</td>
+          <td>キーワード: 空欄 / ジャンル: プログラミング / 「絞り込む」を押す</td>
+          <td>ジャンルが「プログラミング」の行だけが残って出る。</td>
+          <td class="result-cell"><label><input type="radio" name="result-18">OK</label><label><input type="radio" name="result-18">NG</label></td>
+          <td><textarea></textarea></td>
+        </tr>
+        <tr>
+          <td>19</td>
+          <td>名前もジャンルも空で絞り込むと、全件が出る</td>
+          <td>キーワード: 空欄 / ジャンル: すべて / 「絞り込む」を押す</td>
+          <td>絞り込まれず、一覧に6行すべてが出る。</td>
+          <td class="result-cell"><label><input type="radio" name="result-19">OK</label><label><input type="radio" name="result-19">NG</label></td>
+          <td><textarea></textarea></td>
+        </tr>
+        <tr>
+          <td>20</td>
+          <td>絞り込み結果が0件のときは専用文ではなく未登録の文が出る</td>
+          <td>キーワード: 該当しない文字列 / ジャンル: すべて / 「絞り込む」を押す</td>
+          <td>一覧に行は出ず、「まだ1件も登録されていません」と出る。</td>
+          <td class="result-cell"><label><input type="radio" name="result-20">OK</label><label><input type="radio" name="result-20">NG</label></td>
+          <td><textarea></textarea></td>
+        </tr>
+        <tr>
+          <td>21</td>
+          <td>期限が遠い順のリンクで、期限が遅いものから並ぶ</td>
+          <td>絞り込みを外して一覧へ戻り、「期限が遠い順」を押す</td>
+          <td>期限が入っている行は、期限が遠いものから順に上へ並んで出る。</td>
+          <td class="result-cell"><label><input type="radio" name="result-21">OK</label><label><input type="radio" name="result-21">NG</label></td>
+          <td><textarea></textarea></td>
+        </tr>
+        <tr>
+          <td>22</td>
+          <td>追加した行の編集画面で、今の値と完了欄が出る</td>
+          <td>「テスト追加タスク」の行の「編集」を押す</td>
+          <td><span class="mono">/todos/{id}/edit</span> が開き、登録の5項目に加えて完了のチェック欄があり、今の値が入った状態で出る。</td>
+          <td class="result-cell"><label><input type="radio" name="result-22">OK</label><label><input type="radio" name="result-22">NG</label></td>
+          <td><textarea></textarea></td>
+        </tr>
+        <tr>
+          <td>23</td>
+          <td>編集確認画面で、直した内容が文字で出る</td>
+          <td>やること: テスト更新タスク / メモ: 編集後メモ / ジャンル: 就職活動 / 優先度: 低 / 期限: 2026-09-05 / 完了: チェックあり に変えて「確認する」を押す</td>
+          <td><span class="mono">/todos/{id}/confirm</span> が開き、直した内容が入力欄ではなく文字で出る。</td>
+          <td class="result-cell"><label><input type="radio" name="result-23">OK</label><label><input type="radio" name="result-23">NG</label></td>
+          <td><textarea></textarea></td>
+        </tr>
+        <tr>
+          <td>24</td>
+          <td>編集を保存すると一覧へ戻り、保存完了の文と更新後の値が出る</td>
+          <td>項番23の確認画面で「保存する」を押す</td>
+          <td>一覧画面の上に「保存しました」と出て、対象行は「テスト更新タスク」「就職活動」「低」「2026-09-05」「完了」で出る。</td>
+          <td class="result-cell"><label><input type="radio" name="result-24">OK</label><label><input type="radio" name="result-24">NG</label></td>
+          <td><textarea></textarea></td>
+        </tr>
+        <tr>
+          <td>25</td>
+          <td>削除確認画面には消す行の3項目だけが出る</td>
+          <td>「テスト更新タスク」の行の「削除」を押す</td>
+          <td><span class="mono">/todos/{id}/delete</span> が開き、「やること」「ジャンル」「期限」が文字で出て、「消す」「やめる」が押せる。</td>
+          <td class="result-cell"><label><input type="radio" name="result-25">OK</label><label><input type="radio" name="result-25">NG</label></td>
+          <td><textarea></textarea></td>
+        </tr>
+        <tr>
+          <td>26</td>
+          <td>最後に追加した行を削除して、todo件数を5行へ戻す</td>
+          <td>項番25の削除確認画面で「消す」を押す</td>
+          <td>一覧画面の上に「削除しました」と出て、「テスト更新タスク」の行が消え、一覧は5行に戻る。</td>
+          <td class="result-cell"><label><input type="radio" name="result-26">OK</label><label><input type="radio" name="result-26">NG</label></td>
+          <td><textarea></textarea></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    (function () {
+      const textareas = Array.from(document.querySelectorAll("textarea"));
+
+      function resizeTextarea(textarea) {
+        textarea.style.height = "auto";
+        textarea.style.height = textarea.scrollHeight + "px";
+      }
+
+      function resizeAllTextareas() {
+        textareas.forEach(resizeTextarea);
+      }
+
+      textareas.forEach(function (textarea) {
+        resizeTextarea(textarea);
+        textarea.addEventListener("input", function () {
+          resizeTextarea(textarea);
+        });
+      });
+
+      window.addEventListener("beforeprint", resizeAllTextareas);
+      window.addEventListener("load", resizeAllTextareas);
+
+      document.getElementById("printButton").addEventListener("click", function () {
+        resizeAllTextareas();
+        window.print();
+      });
+    }());
+  </script>
+</body>
+</html>
