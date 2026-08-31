@@ -1,10 +1,16 @@
 package com.example.todoapp.api;
 
 import java.net.URI;
+import java.util.Map;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,7 +49,8 @@ public class TodoApiController {
     }
 
     @PostMapping("/api/todos")
-    public ResponseEntity<TodoDto> createTodo(@RequestBody Todo todo) {
+    public ResponseEntity<TodoDto> createTodo(@Valid @RequestBody TodoRequest request) {
+        Todo todo = request.toTodo();
         if (todo.getCompleted() == null) {
             todo.setCompleted(false);
         }
@@ -54,14 +61,32 @@ public class TodoApiController {
     }
 
     @PutMapping("/api/todos/{id}")
-    public ResponseEntity<?> updateTodo(@PathVariable Long id, @RequestBody Todo todo) {
+    public ResponseEntity<?> updateTodo(@PathVariable Long id, @Valid @RequestBody TodoRequest request) {
         Todo existing = todoService.findById(id);
         if (existing == null) {
             return notFound(id);
         }
+        Todo todo = request.toTodo();
         todo.setId(id);
         todoService.update(todo);
         return ResponseEntity.ok(TodoDto.from(todoService.findById(id)));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ProblemDetail> handleValidationError(
+            MethodArgumentNotValidException exception, HttpServletRequest request) {
+        ProblemDetail problem = ProblemDetail.forStatus(400);
+        problem.setTitle("Bad Request");
+        problem.setDetail("入力に誤りがあります");
+        String instance = request.getRequestURL().toString();
+        if (request.getQueryString() != null) {
+            instance += "?" + request.getQueryString();
+        }
+        problem.setInstance(URI.create(instance));
+        problem.setProperty("errors", exception.getBindingResult().getFieldErrors().stream()
+                .map(error -> Map.of("field", error.getField(), "message", error.getDefaultMessage()))
+                .collect(Collectors.toList()));
+        return ResponseEntity.badRequest().body(problem);
     }
 
     @DeleteMapping("/api/todos/{id}")
