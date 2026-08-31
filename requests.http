@@ -8,9 +8,9 @@ POST http://localhost:8080/api/todos
 Content-Type: application/json
 
 {
-  "title": "",
+  "title": "ｑｑｑｑ",
   "category": "プログラミング",
-  "priority": "",
+  "priority": 2,
   "dueDate": "2026-09-30"
 }
 
@@ -32,3 +32,6 @@ Content-Type: application/json
 
 ### 4. 1件削除する
 DELETE http://localhost:8080/api/todos/34
+
+### 5. 祝日を直接取ってくる
+GET https://holidays-jp.github.io/api/v1/date.json
