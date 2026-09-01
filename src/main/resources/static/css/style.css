@@ -124,6 +124,12 @@ body {
     margin-bottom: 16px;
 }
 
+.calendar-navigation-left,
+.calendar-navigation-right {
+    display: flex;
+    gap: 12px;
+}
+
 .calendar-table {
     width: 100%;
     border-collapse: collapse;
