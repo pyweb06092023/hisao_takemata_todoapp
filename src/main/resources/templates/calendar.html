@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>カレンダー</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
     <div class="container">
         <h1 class="page-title"><span th:text="${year}">2026</span>年<span th:text="${month}">4</span>月</h1>
@@ -16,8 +18,13 @@
         <table class="calendar-table" th:attr="data-from=${from},data-to=${to}">
             <thead>
                 <tr>
-                    <th scope="col">日</th><th scope="col">月</th><th scope="col">火</th>
-                    <th scope="col">水</th><th scope="col">木</th><th scope="col">金</th><th scope="col">土</th>
+                    <th scope="col">日</th>
+                    <th scope="col">月</th>
+                    <th scope="col">火</th>
+                    <th scope="col">水</th>
+                    <th scope="col">木</th>
+                    <th scope="col">金</th>
+                    <th scope="col">土</th>
                 </tr>
             </thead>
             <tbody>
@@ -51,4 +58,5 @@
         loadTodos();
     </script>
 </body>
+
 </html>
