@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>カレンダー</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="page-title"><span th:text="${year}">2026</span>年<span th:text="${month}">4</span>月</h1>
+        <div class="calendar-navigation">
+            <a class="btn sub" th:href="@{/calendar(year=${previousYear},month=${previousMonth})}">前の月</a>
+            <a class="btn sub" th:href="@{/calendar(year=${nextYear},month=${nextMonth})}">次の月</a>
+        </div>
+        <table class="calendar-table" th:attr="data-from=${from},data-to=${to}">
+            <thead>
+                <tr>
+                    <th scope="col">日</th><th scope="col">月</th><th scope="col">火</th>
+                    <th scope="col">水</th><th scope="col">木</th><th scope="col">金</th><th scope="col">土</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="week : ${weeks}">
+                    <th:block th:each="date : ${week}">
+                        <td th:if="${date != null}" th:attr="data-date=${date}" th:text="${date.dayOfMonth}"></td>
+                        <td th:if="${date == null}"></td>
+                    </th:block>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        async function loadTodos() {
+            const calendarTable = document.querySelector('.calendar-table');
+            const from = calendarTable.dataset.from;
+            const to = calendarTable.dataset.to;
+            const res = await fetch(`/api/todos?from=${from}&to=${to}`);
+            const todos = await res.json();
+
+            calendarTable.querySelectorAll('[data-date]').forEach(cell => {
+                const matchingTodos = todos.filter(todo => todo.dueDate === cell.dataset.date);
+                matchingTodos.forEach(todo => {
+                    const todoName = document.createElement('div');
+                    todoName.textContent = todo.title;
+                    cell.appendChild(todoName);
+                });
+            });
+        }
+
+        loadTodos();
+    </script>
+</body>
+</html>
