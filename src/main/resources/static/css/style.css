@@ -42,6 +42,12 @@ body {
     font-weight: bold;
 }
 
+.priority-high-marker {
+    margin-left: 4px;
+    color: #b45309;
+    font-weight: bold;
+}
+
 .todo-table tr.overdue {
     background: #a90aa9b0;
 }
