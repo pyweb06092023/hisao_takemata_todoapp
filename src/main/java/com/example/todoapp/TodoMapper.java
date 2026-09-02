@@ -11,6 +11,9 @@ public interface TodoMapper {
     List<Todo> search(@Param("keyword") String keyword, @Param("category") String category,
             @Param("order") String order, @Param("from") LocalDate from, @Param("to") LocalDate to);
 
+    List<Todo> searchForList(@Param("keyword") String keyword, @Param("category") String category,
+            @Param("order") String order, @Param("includeCompleted") boolean includeCompleted);
+
     Todo findById(Long id);
 
     void deleteById(Long id);

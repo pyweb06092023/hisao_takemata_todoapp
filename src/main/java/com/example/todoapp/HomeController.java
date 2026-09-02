@@ -33,13 +33,15 @@ public class HomeController {
             @RequestParam(defaultValue = "") String keyword,
             @RequestParam(defaultValue = "\u3059\u3079\u3066") String category,
             @RequestParam(defaultValue = "asc") String order,
+            @RequestParam(defaultValue = "false") boolean showCompleted,
             Model model) {
         String sortOrder = "desc".equals(order) ? "desc" : "asc";
-        List<Todo> todos = todoService.search(keyword, category, sortOrder);
+        List<Todo> todos = todoService.searchForList(keyword, category, sortOrder, showCompleted);
         model.addAttribute("todos", todos);
         model.addAttribute("keyword", keyword);
         model.addAttribute("category", category);
         model.addAttribute("order", sortOrder);
+        model.addAttribute("showCompleted", showCompleted);
         return "todos";
     }
 
