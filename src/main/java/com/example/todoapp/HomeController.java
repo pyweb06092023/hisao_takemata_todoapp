@@ -16,6 +16,7 @@ import jakarta.validation.Valid;
 
 @Controller
 public class HomeController {
+    private static final int PAGE_SIZE = 10;
     private final TodoService todoService;
 
     public HomeController(TodoService todoService) {
@@ -34,14 +35,22 @@ public class HomeController {
             @RequestParam(defaultValue = "\u3059\u3079\u3066") String category,
             @RequestParam(defaultValue = "asc") String order,
             @RequestParam(defaultValue = "false") boolean showCompleted,
+            @RequestParam(defaultValue = "1") int page,
             Model model) {
         String sortOrder = "desc".equals(order) ? "desc" : "asc";
-        List<Todo> todos = todoService.searchForList(keyword, category, sortOrder, showCompleted);
+        int currentPage = Math.max(page, 1);
+        int totalCount = todoService.countForList(keyword, category, showCompleted);
+        int totalPages = Math.max((totalCount + PAGE_SIZE - 1) / PAGE_SIZE, 1);
+        currentPage = Math.min(currentPage, totalPages);
+        List<Todo> todos = todoService.searchForList(keyword, category, sortOrder, showCompleted,
+                PAGE_SIZE, (currentPage - 1) * PAGE_SIZE);
         model.addAttribute("todos", todos);
         model.addAttribute("keyword", keyword);
         model.addAttribute("category", category);
         model.addAttribute("order", sortOrder);
         model.addAttribute("showCompleted", showCompleted);
+        model.addAttribute("page", currentPage);
+        model.addAttribute("totalPages", totalPages);
         return "todos";
     }
 

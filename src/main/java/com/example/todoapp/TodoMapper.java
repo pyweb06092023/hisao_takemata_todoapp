@@ -12,7 +12,11 @@ public interface TodoMapper {
             @Param("order") String order, @Param("from") LocalDate from, @Param("to") LocalDate to);
 
     List<Todo> searchForList(@Param("keyword") String keyword, @Param("category") String category,
-            @Param("order") String order, @Param("includeCompleted") boolean includeCompleted);
+            @Param("order") String order, @Param("includeCompleted") boolean includeCompleted,
+            @Param("limit") int limit, @Param("offset") int offset);
+
+    int countForList(@Param("keyword") String keyword, @Param("category") String category,
+            @Param("includeCompleted") boolean includeCompleted);
 
     Todo findById(Long id);
 

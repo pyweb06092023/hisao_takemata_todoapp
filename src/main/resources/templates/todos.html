@@ -60,6 +60,14 @@
                 </tr>
             </tbody>
         </table>
+        <nav th:if="${totalPages > 1}" aria-label="ページ移動">
+            <span th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
+                <a class="link" th:if="${pageNumber != page}"
+                   th:href="@{/todos(keyword=${keyword}, category=${category}, order=${order}, showCompleted=${showCompleted}, page=${pageNumber})}"
+                   th:text="${pageNumber}">1</a>
+                <span th:if="${pageNumber == page}" th:text="${pageNumber}">1</span>
+            </span>
+        </nav>
     </div>
 </body>
 </html>

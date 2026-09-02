@@ -20,8 +20,13 @@ public class TodoService {
         return search(keyword, category, order, null, null);
     }
 
-    public List<Todo> searchForList(String keyword, String category, String order, boolean includeCompleted) {
-        return todoMapper.searchForList(keyword, category, order, includeCompleted);
+    public List<Todo> searchForList(String keyword, String category, String order, boolean includeCompleted,
+            int limit, int offset) {
+        return todoMapper.searchForList(keyword, category, order, includeCompleted, limit, offset);
+    }
+
+    public int countForList(String keyword, String category, boolean includeCompleted) {
+        return todoMapper.countForList(keyword, category, includeCompleted);
     }
 
     public List<Todo> search(String keyword, String category, String order, LocalDate from, LocalDate to) {

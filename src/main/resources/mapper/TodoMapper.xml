@@ -51,6 +51,16 @@
             <when test="order == 'desc'">ORDER BY due_date DESC</when>
             <otherwise>ORDER BY due_date ASC</otherwise>
         </choose>
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="countForList" resultType="int">
+        SELECT COUNT(*) FROM todos
+        <where>
+            <if test="keyword != null and keyword != ''">title LIKE CONCAT('%', #{keyword}, '%')</if>
+            <if test="category != null and category != '' and category != 'すべて'">AND category = #{category}</if>
+            <if test="includeCompleted == false">AND completed = FALSE</if>
+        </where>
     </select>
 
     <select id="findById" parameterType="long" resultType="com.example.todoapp.Todo">
