@@ -102,8 +102,30 @@
             });
         }
 
+        async function loadWeather() {
+            const calendarTable = document.querySelector('.calendar-table');
+            try {
+                const from = calendarTable.dataset.from;
+                const to = calendarTable.dataset.to;
+                const res = await fetch(`/api/weather?from=${from}&to=${to}`);
+                if (!res.ok) return;
+                const weather = await res.json();
+                calendarTable.querySelectorAll('[data-date]').forEach(cell => {
+                    const text = weather[cell.dataset.date];
+                    if (!text) return;
+                    const weatherText = document.createElement('div');
+                    weatherText.textContent = text;
+                    weatherText.className = 'weather';
+                    cell.appendChild(weatherText);
+                });
+            } catch (error) {
+                // 天気が取れない場合も、カレンダー表示は続ける
+            }
+        }
+
         loadTodos();
         loadHolidays();
+        loadWeather();
     </script>
 </body>
 
