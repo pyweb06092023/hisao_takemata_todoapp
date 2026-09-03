@@ -125,6 +125,22 @@ public class HomeController {
         return "redirect:/todos?trash=1";
     }
 
+    @PostMapping("/todos/{id}/pin")
+    public String pin(@PathVariable Long id, @RequestParam boolean pinned,
+            @RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "すべて") String category,
+            @RequestParam(defaultValue = "asc") String order, @RequestParam(defaultValue = "false") boolean showCompleted,
+            @RequestParam(defaultValue = "0") int trash, @RequestParam(defaultValue = "1") int page,
+            RedirectAttributes redirectAttributes) {
+        todoService.setPinned(id, pinned);
+        redirectAttributes.addAttribute("keyword", keyword);
+        redirectAttributes.addAttribute("category", category);
+        redirectAttributes.addAttribute("order", order);
+        redirectAttributes.addAttribute("showCompleted", showCompleted);
+        redirectAttributes.addAttribute("trash", trash);
+        redirectAttributes.addAttribute("page", page);
+        return "redirect:/todos";
+    }
+
     @PostMapping("/todos/{id}/confirm")
     public String editConfirm(@PathVariable Long id, @Valid @ModelAttribute Todo todo, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {

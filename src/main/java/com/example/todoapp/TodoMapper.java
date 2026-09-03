@@ -24,6 +24,8 @@ public interface TodoMapper {
 
     void restoreById(Long id);
 
+    void togglePinned(@Param("id") Long id, @Param("pinned") boolean pinned);
+
     void insert(Todo todo);
 
     void update(Todo todo);

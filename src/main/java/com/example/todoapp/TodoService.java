@@ -74,4 +74,8 @@ public class TodoService {
     public void restore(Long id) {
         todoMapper.restoreById(id);
     }
+
+    public void setPinned(Long id, boolean pinned) {
+        todoMapper.togglePinned(id, pinned);
+    }
 }
