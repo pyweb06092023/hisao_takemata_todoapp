@@ -35,20 +35,25 @@ public class HomeController {
             @RequestParam(defaultValue = "\u3059\u3079\u3066") String category,
             @RequestParam(defaultValue = "asc") String order,
             @RequestParam(defaultValue = "false") boolean showCompleted,
+            @RequestParam(defaultValue = "0") int trash,
             @RequestParam(defaultValue = "1") int page,
             Model model) {
         String sortOrder = "desc".equals(order) ? "desc" : "asc";
         int currentPage = Math.max(page, 1);
-        int totalCount = todoService.countForList(keyword, category, showCompleted);
+        boolean showTrash = trash == 1;
+        int totalCount = showTrash ? todoService.countForTrash(keyword, category)
+                : todoService.countForList(keyword, category, showCompleted);
         int totalPages = Math.max((totalCount + PAGE_SIZE - 1) / PAGE_SIZE, 1);
         currentPage = Math.min(currentPage, totalPages);
-        List<Todo> todos = todoService.searchForList(keyword, category, sortOrder, showCompleted,
-                PAGE_SIZE, (currentPage - 1) * PAGE_SIZE);
+        List<Todo> todos = showTrash
+                ? todoService.searchForTrash(keyword, category, sortOrder, PAGE_SIZE, (currentPage - 1) * PAGE_SIZE)
+                : todoService.searchForList(keyword, category, sortOrder, showCompleted, PAGE_SIZE, (currentPage - 1) * PAGE_SIZE);
         model.addAttribute("todos", todos);
         model.addAttribute("keyword", keyword);
         model.addAttribute("category", category);
         model.addAttribute("order", sortOrder);
         model.addAttribute("showCompleted", showCompleted);
+        model.addAttribute("trash", showTrash);
         model.addAttribute("page", currentPage);
         model.addAttribute("totalPages", totalPages);
         return "todos";
@@ -111,6 +116,13 @@ public class HomeController {
         todoService.delete(id);
         redirectAttributes.addFlashAttribute("message", "\u524a\u9664\u3057\u307e\u3057\u305f");
         return "redirect:/todos";
+    }
+
+    @PostMapping("/todos/{id}/restore")
+    public String restore(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        todoService.restore(id);
+        redirectAttributes.addFlashAttribute("message", "戻しました");
+        return "redirect:/todos?trash=1";
     }
 
     @PostMapping("/todos/{id}/confirm")
