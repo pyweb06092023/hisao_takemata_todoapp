@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.time.LocalDate;
+import java.nio.charset.StandardCharsets;
+import java.time.format.DateTimeFormatter;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -44,6 +46,29 @@ public class TodoApiController {
                 .stream()
                 .map(TodoDto::from)
                 .toList();
+    }
+
+    @GetMapping(value = "/api/todos.csv", produces = "text/csv")
+    public ResponseEntity<byte[]> getTodosCsv(
+            @RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "すべて") String category,
+            @RequestParam(defaultValue = "asc") String order, @RequestParam(defaultValue = "false") boolean showCompleted,
+            @RequestParam(defaultValue = "0") int trash) {
+        List<Todo> todos = todoService.searchForExport(keyword, category, "desc".equals(order) ? "desc" : "asc", showCompleted, trash == 1);
+        StringBuilder csv = new StringBuilder("やること,メモ,ジャンル,優先度,期限,状態\r\n");
+        for (Todo todo : todos) {
+            String status = Boolean.TRUE.equals(todo.getCompleted()) ? "完了 (" + (todo.getCompletedAt() == null ? "" : todo.getCompletedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))) + ")" : "未完了";
+            csv.append(csvField(todo.getTitle())).append(',').append(csvField(todo.getDetail())).append(',').append(csvField(todo.getCategory())).append(',')
+                    .append(csvField(todo.getPriority() == null ? "" : todo.getPriority() == 1 ? "高" : todo.getPriority() == 2 ? "中" : "低")).append(',')
+                    .append(csvField(todo.getDueDate())).append(',').append(csvField(status)).append("\r\n");
+        }
+        return ResponseEntity.ok().header("Content-Disposition", "attachment; filename=\"todos.csv\"")
+                .body(("\uFEFF" + csv).getBytes(StandardCharsets.UTF_8));
+    }
+
+    private String csvField(Object value) {
+        String text = value == null ? "" : value.toString();
+        if (!text.isEmpty() && "=+-@".indexOf(text.charAt(0)) >= 0) text = "'" + text;
+        return "\"" + text.replace("\"", "\"\"").replace("\r", "\r\n").replace("\n", "\r\n") + "\"";
     }
 
     @GetMapping("/api/todos/{id}")
