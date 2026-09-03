@@ -25,6 +25,7 @@ public class Todo {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dueDate;
     private Boolean completed;
+    private LocalDateTime completedAt;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
